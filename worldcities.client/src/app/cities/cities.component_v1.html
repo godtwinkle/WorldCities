@@ -1,0 +1,22 @@
+<h1>Những thành phố</h1>
+
+<p *ngIf="!cities"><em>Đang tải...</em></p>
+
+<table aria-labelledby="tableLabel" [hidden]="!cities">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Lat</th>
+      <th>Lon</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let city of cities">
+      <td>{{ city.id }}</td>
+      <td>{{ city.name }}</td>
+      <td>{{ city.lat }}</td>
+      <td>{{ city.lon }}</td>
+    </tr>
+  </tbody>
+</table>

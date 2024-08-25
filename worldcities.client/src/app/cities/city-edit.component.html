@@ -1,0 +1,64 @@
+<div class="city-edit">
+  <h1>{{title}}</h1>
+  <p *ngIf="id&&!city"><em>Đang tải…</em></p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-error *ngIf="form.invalid && form.hasError('isDupeCity')">
+        <strong>LỖI</strong>:
+          Một thành phố với cùng <i>tên</i>, <i>Kinh độ</i>,<i>Vĩ độ</i> và <i>quốc gia</i> đã tồn tại
+      </mat-error>
+    </p>
+    <!-- Name -->
+    <mat-form-field>
+      <mat-label>Tên:</mat-label>
+      <input matInput formControlName="name" required
+             placeholder="Nhập tên">
+      <mat-error *ngIf="form.controls['name'].errors?.['required']">
+        Vui lòng nhập trường này
+      </mat-error>
+    </mat-form-field>
+    <!-- Lat -->
+    <mat-form-field>
+      <mat-label>Kinh độ:</mat-label>
+      <input matInput formControlName="lat" required
+             placeholder="Nhập kinh độ">
+      <mat-error *ngIf="form.controls['lat'].errors?.['required']">
+        Vui lòng nhập trường này
+      </mat-error>
+    </mat-form-field>
+    <!-- Lon -->
+    <mat-form-field>
+      <mat-label>Vĩ độ:</mat-label>
+      <input matInput formControlName="lon" required
+             placeholder="Nhập vĩ độ">
+      <mat-error *ngIf="form.controls['lon'].errors?.['required']">
+        Vui lòng nhập trường này
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="countries">
+      <mat-label>Chọn quốc gia...</mat-label>
+      <mat-select id="countryId" formControlName="countryId">
+        <mat-option *ngFor="let country of countries"
+                    [value]="country.id">
+          {{country.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls['countryId'].errors?.['required']">
+        Vui lòng nhập trường này
+      </mat-error>
+    </mat-form-field>
+
+    <div>
+      <button mat-flat-button
+              color="primary"
+              type="submit"
+              [disabled]="!form.valid">
+        {{this.id?"Chỉnh sửa":"Tạo mới"}}
+      </button>
+      <button type="submit" mat-flat-button color="secondary"
+              [routerLink]="['/cities']">
+        Huỷ
+      </button>
+    </div>
+  </form>
+</div>
