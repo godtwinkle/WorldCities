@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { CitiesComponent } from './cities/cities.component';
-import { CountriesComponent } from './countries/countries.component';
 import { CityEditComponent } from './cities/city-edit.component';
+import { CountriesComponent } from './countries/countries.component';
 import { CountryEditComponent } from './countries/country-edit.component';
 
 const routes: Routes = [
@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: 'countries', component: CountriesComponent },
   { path: 'country/:id', component: CountryEditComponent },
   { path: 'country', component: CountryEditComponent }
-
 ];
 
 @NgModule({

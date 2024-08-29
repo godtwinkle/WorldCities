@@ -1,13 +1,16 @@
-<h1>Những quốc gia</h1>
+<h1>Countries</h1>
 
+<p>Here's a list of countries: feel free to play with it.</p>
 
-<p *ngIf="!countries"><em>Đang tải...</em></p>
+<p *ngIf="!countries"><em>Loading...</em></p>
+
 <button mat-flat-button color="primary"
         class="btn-add" [routerLink]="['/country']">
-  Tạo mới quốc gia
+  Add a new Country
 </button>
+
 <mat-form-field [hidden]="!countries">
-  <input matInput #filter (keyup)="loadData(filter.value)"
+  <input matInput #filter (keyup)="onFilterTextChanged(filter.value)"
          placeholder="Filter by name (or part of it)...">
 </mat-form-field>
 

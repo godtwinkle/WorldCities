@@ -14,7 +14,26 @@ import { Country } from './country';
   styleUrls: ['./country-edit.component.scss']
 })
 export class CountryEditComponent implements OnInit {
-
+  getError(control: AbstractControl, displayName: string): string[] {
+    var errors: string[] = [];
+    Object.keys(control.errors || {}).forEach((key) => {
+      switch (key) {
+        case 'required':
+          errors.push(`${displayName} là bắt buộc`);
+          break;
+        case 'pattern':
+          errors.push(`${displayName} chứa ký tự không hợp lệ`)
+          break;
+        case 'isDupeField':
+          errors.push(`${displayName} đã tồn tại`)
+          break;
+        default:
+          errors.push(`${displayName} không hợp lệ`)
+          break;
+      }
+    });
+    return errors;
+  }
   // the view title
   title?: string;
 
@@ -77,7 +96,7 @@ export class CountryEditComponent implements OnInit {
       this.http.get<Country>(url).subscribe({
         next: (result) => {
           this.country = result;
-          this.title = "Chỉnh sửa - " + this.country.name;
+          this.title = "Edit - " + this.country.name;
 
           // update the form with the country value
           this.form.patchValue(this.country);
@@ -88,7 +107,7 @@ export class CountryEditComponent implements OnInit {
     else {
       // ADD NEW MODE
 
-      this.title = "Tạo mới quốc gia";
+      this.title = "Create a new Country";
     }
   }
 
@@ -107,7 +126,7 @@ export class CountryEditComponent implements OnInit {
           .put<Country>(url, country)
           .subscribe({
             next: (result) => {
-              console.log("Quốc gia " + country!.id + " đã được cập nhật.");
+              console.log("Country " + country!.id + " has been updated.");
 
               // go back to countries view
               this.router.navigate(['/countries']);
@@ -122,7 +141,7 @@ export class CountryEditComponent implements OnInit {
           .post<Country>(url, country)
           .subscribe({
             next: (result) => {
-              console.log("Quốc giá " + result.id + " đã được tạo mới.");
+              console.log("Country " + result.id + " has been created.");
 
               // go back to countries view
               this.router.navigate(['/countries']);

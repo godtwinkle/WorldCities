@@ -1,42 +1,49 @@
 <div class="city-edit">
   <h1>{{title}}</h1>
-  <p *ngIf="id&&!city"><em>Đang tải…</em></p>
+  <p *ngIf="id && !city"><em>Loading...</em></p>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
     <p>
       <mat-error *ngIf="form.invalid && form.hasError('isDupeCity')">
-        <strong>LỖI</strong>:
-          Một thành phố với cùng <i>tên</i>, <i>Kinh độ</i>,<i>Vĩ độ</i> và <i>quốc gia</i> đã tồn tại
+        <strong>ERROR</strong>:
+        A city with the same <i>name</i>, <i>lat</i>,
+        <i>lon</i> and <i>country</i> already exists.
       </mat-error>
     </p>
-    <!-- Name -->
+
+    <!—Name -->
     <mat-form-field>
-      <mat-label>Tên:</mat-label>
+      <mat-label>Name:</mat-label>
       <input matInput formControlName="name" required
-             placeholder="Nhập tên">
+             placeholder="Type a name">
       <mat-error *ngIf="form.controls['name'].errors?.['required']">
-        Vui lòng nhập trường này
+        Name is required.
       </mat-error>
     </mat-form-field>
+
     <!-- Lat -->
     <mat-form-field>
-      <mat-label>Kinh độ:</mat-label>
+      <mat-label>Latitude:</mat-label>
       <input matInput formControlName="lat" required
-             placeholder="Nhập kinh độ">
+             placeholder="Insert latitude">
       <mat-error *ngIf="form.controls['lat'].errors?.['required']">
-        Vui lòng nhập trường này
+        Latitude is required.
       </mat-error>
     </mat-form-field>
+
     <!-- Lon -->
     <mat-form-field>
-      <mat-label>Vĩ độ:</mat-label>
+      <mat-label>Longitude:</mat-label>
       <input matInput formControlName="lon" required
-             placeholder="Nhập vĩ độ">
+             placeholder="Insert longitude">
       <mat-error *ngIf="form.controls['lon'].errors?.['required']">
-        Vui lòng nhập trường này
+        Longitude is required.
       </mat-error>
     </mat-form-field>
+
+    <!-- Country -->
     <mat-form-field *ngIf="countries">
-      <mat-label>Chọn quốc gia...</mat-label>
+      <mat-label>Select a Country...</mat-label>
       <mat-select id="countryId" formControlName="countryId">
         <mat-option *ngFor="let country of countries"
                     [value]="country.id">
@@ -44,20 +51,19 @@
         </mat-option>
       </mat-select>
       <mat-error *ngIf="form.controls['countryId'].errors?.['required']">
-        Vui lòng nhập trường này
+        Please select a Country.
       </mat-error>
     </mat-form-field>
 
     <div>
-      <button mat-flat-button
-              color="primary"
+      <button mat-flat-button color="primary"
               type="submit"
               [disabled]="!form.valid">
-        {{this.id?"Chỉnh sửa":"Tạo mới"}}
+        {{ id ? "Save" : "Create" }}
       </button>
-      <button type="submit" mat-flat-button color="secondary"
+      <button mat-flat-button color="secondary"
               [routerLink]="['/cities']">
-        Huỷ
+        Cancel
       </button>
     </div>
   </form>
