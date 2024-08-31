@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorldCities.Server.Data;
 using WorldCities.Server.Data.Models;
-using System.Linq.Dynamic.Core;
 
 namespace WorldCities.Server.Controllers
 {
@@ -19,7 +18,7 @@ namespace WorldCities.Server.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ActionResult<ApiResult<Country>>> GetCountries(
+        public async Task<ActionResult<ApiResult<CountryDTO>>> GetCountries(
         int pageIndex = 0,
         int pageSize = 10,
         string? sortColumn = null,
@@ -27,8 +26,17 @@ namespace WorldCities.Server.Controllers
         string? filterColumn = null,
         string? filterQuery = null)
         {
-            return await ApiResult<Country>.CreateAsync(
-                    _context.Countries.AsNoTracking(),
+            return await ApiResult<CountryDTO>.CreateAsync(
+                    _context.Countries.AsNoTracking()
+
+                        .Select(c => new CountryDTO()
+                        {
+                            Id = c.Id,
+                            Name = c.Name,
+                            ISO2 = c.ISO2,
+                            ISO3 = c.ISO3,
+                            TotCities = c.Cities!.Count
+                        }),
                     pageIndex,
                     pageSize,
                     sortColumn,
@@ -116,21 +124,28 @@ namespace WorldCities.Server.Controllers
 
         [HttpPost]
         [Route("IsDupeField")]
-        public  bool IsDupeField(int countryId,string fieldName,string fieldValue)
+        public bool IsDupeField(
+            int countryId,
+            string fieldName,
+            string fieldValue)
         {
-            //switch (fieldName)
-            //{
-            //    case "name":
-            //        return _context.Countries.Any(c => c.Name == fieldValue && c.Id != countryId);
-            //    case "iso2":
-            //        return _context.Countries.Any(c => c.ISO2 == fieldValue && c.Id != countryId);
-            //    case "iso3":
-            //        return _context.Countries.Any(c => c.ISO3 == fieldValue && c.Id != countryId);
-            //    default:
-            //        return false;
-            //}
-            return (ApiResult<Country>.IsValidProperty(fieldName, true))
-                ?_context.Countries.Any(string.Format("{0}==@0 &&Id!=@1",fieldName),fieldValue,countryId):false;
+            switch (fieldName)
+            {
+                case "name":
+                    return _context.Countries.Any(
+                        c => c.Name == fieldValue && c.Id != countryId);
+
+                case "iso2":
+                    return _context.Countries.Any(
+                        c => c.ISO2 == fieldValue && c.Id != countryId);
+
+                case "iso3":
+                    return _context.Countries.Any(
+                        c => c.ISO3 == fieldValue && c.Id != countryId);
+
+                default:
+                    return false;
+            }
         }
     }
 }
