@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // import { environment } from './../../environments/environment';
@@ -18,7 +18,6 @@ import { CityService } from './city.service';
 })
 export class CityEditComponent
   extends BaseFormComponent implements OnInit {
-
   // the view title
   title?: string;
 
@@ -32,7 +31,8 @@ export class CityEditComponent
 
   // the countries array for the select
   countries?: Country[];
-
+  activityLog: string = '';
+  private subscriptions: Subscription = new Subscription();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -54,11 +54,30 @@ export class CityEditComponent
       countryId: new FormControl('', Validators.required)
     }, null, this.isDupeCity());
 
+    this.subscriptions.add(this.form.valueChanges.subscribe(() => {
+      if (!this.form.dirty) {
+        this.log("Form Model has been loaded");
+      } else {
+        this.log("Form was updated by the user");
+      }
+    }));
+
+    this.subscriptions.add(this.form.get("name")!.valueChanges.subscribe(() => {
+      if (!this.form.dirty) {
+        this.log("Name has been loaded with initial values");
+      } else {
+        this.log("Name was updated by the user")
+      }
+    }));
+
     this.loadData();
   }
 
-  loadData() {
+  log(str: string) {
+    this.activityLog += "[" + new Date().toLocaleString() + "]" + str + "<br/>";
+  }
 
+  loadData() {
     // load countries
     this.loadCountries();
 
@@ -100,7 +119,7 @@ export class CityEditComponent
           this.countries = result.data;
         },
         error: (error) => console.error(error)
-    });
+      });
   }
 
   onSubmit() {
@@ -131,7 +150,6 @@ export class CityEditComponent
           .post(city)
           .subscribe({
             next: (result) => {
-
               console.log("City " + result.id + " has been created.");
 
               // go back to cities view
@@ -145,7 +163,6 @@ export class CityEditComponent
 
   isDupeCity(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-
       var city = <City>{};
       city.id = (this.id) ? this.id : 0;
       city.name = this.form.controls['name'].value;
@@ -158,5 +175,9 @@ export class CityEditComponent
           return (result ? { isDupeCity: true } : null);
         }));
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }
