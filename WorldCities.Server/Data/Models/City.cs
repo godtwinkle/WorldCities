@@ -11,6 +11,7 @@ namespace WorldCities.Server.Data.Models
     public class City
     {
         #region Properties
+
         /// <summary>
         /// The unique id and primary key for this City
         /// </summary>
@@ -21,7 +22,7 @@ namespace WorldCities.Server.Data.Models
         /// <summary>
         /// City name (in UTF8 format)
         /// </summary>
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// City latitude
@@ -40,13 +41,16 @@ namespace WorldCities.Server.Data.Models
         /// </summary>
         [ForeignKey(nameof(Country))]
         public int CountryId { get; set; }
-        #endregion
+
+        #endregion Properties
 
         #region Navigation Properties
+
         /// <summary>
         /// The country related to this city.
         /// </summary>
         public Country? Country { get; set; }
-        #endregion
+
+        #endregion Navigation Properties
     }
 }

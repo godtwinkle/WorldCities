@@ -18,7 +18,6 @@ import { CityService } from './city.service';
 })
 export class CityEditComponent
   extends BaseFormComponent implements OnInit {
-
   // the view title
   title?: string;
 
@@ -58,7 +57,6 @@ export class CityEditComponent
   }
 
   loadData() {
-
     // load countries
     this.loadCountries();
 
@@ -100,7 +98,7 @@ export class CityEditComponent
           this.countries = result.data;
         },
         error: (error) => console.error(error)
-    });
+      });
   }
 
   onSubmit() {
@@ -131,7 +129,6 @@ export class CityEditComponent
           .post(city)
           .subscribe({
             next: (result) => {
-
               console.log("City " + result.id + " has been created.");
 
               // go back to cities view
@@ -145,7 +142,6 @@ export class CityEditComponent
 
   isDupeCity(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
-
       var city = <City>{};
       city.id = (this.id) ? this.id : 0;
       city.name = this.form.controls['name'].value;

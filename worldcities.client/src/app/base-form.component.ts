@@ -5,7 +5,6 @@ import { FormGroup, AbstractControl } from '@angular/forms';
   template: ''
 })
 export abstract class BaseFormComponent {
-
   // the form model
   form!: FormGroup;
 
@@ -35,5 +34,4 @@ export abstract class BaseFormComponent {
   }
 
   constructor() { }
-
 }

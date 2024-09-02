@@ -3,9 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 export abstract class BaseService<T> {
-  constructor(
-    protected http: HttpClient) {
-  }
+  constructor(protected http: HttpClient) { }
 
   abstract getData(
     pageIndex: number,

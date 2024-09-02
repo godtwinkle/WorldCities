@@ -62,7 +62,6 @@ export class CitiesComponent implements OnInit {
   }
 
   getData(event: PageEvent) {
-
     var sortColumn = (this.sort)
       ? this.sort.active
       : this.defaultSortColumn;
