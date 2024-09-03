@@ -1,9 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 using WorldCities.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration).WriteTo.MSSqlServer(connectionString: ctx.Configuration.GetConnectionString("DefaultConnection"), restrictedToMinimumLevel: LogEventLevel.Information, sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions
+{
+    TableName = "LogEvents",
+    AutoCreateSqlTable = true
+}).WriteTo.Console());
 
 builder.Services.AddControllers()
     //.AddJsonOptions(options =>
@@ -26,6 +34,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

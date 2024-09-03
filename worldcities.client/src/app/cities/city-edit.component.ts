@@ -31,7 +31,7 @@ export class CityEditComponent
 
   // the countries array for the select
   countries?: Observable<Country[]>;
-  activityLog: string = '';
+  //activityLog: string = '';
   private subscriptions: Subscription = new Subscription();
   private destroySubject = new Subject()
   constructor(
@@ -78,7 +78,8 @@ export class CityEditComponent
   }
 
   log(str: string) {
-    this.activityLog += "[" + new Date().toLocaleString() + "]" + str + "<br/>";
+    //this.activityLog += "[" + new Date().toLocaleString() + "]" + str + "<br/>";
+    console.log("[" + new Date().toLocaleString() + "]" + str);
   }
 
   loadData() {
