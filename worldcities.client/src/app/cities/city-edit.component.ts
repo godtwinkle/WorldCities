@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -17,7 +17,7 @@ import { CityService } from './city.service';
   styleUrls: ['./city-edit.component.scss']
 })
 export class CityEditComponent
-  extends BaseFormComponent implements OnInit {
+  extends BaseFormComponent implements OnInit, OnDestroy {
   // the view title
   title?: string;
 
@@ -30,7 +30,7 @@ export class CityEditComponent
   id?: number;
 
   // the countries array for the select
-  countries?: Country[];
+  countries?: Observable<Country[]>;
   activityLog: string = '';
   private subscriptions: Subscription = new Subscription();
   constructor(
@@ -108,18 +108,19 @@ export class CityEditComponent
 
   loadCountries() {
     // fetch all the countries from the server
-    this.cityService.getCountries(
+    this.countries = this.cityService.getCountries(
       0,
       9999,
       "name",
       "asc",
       null,
-      null).subscribe({
-        next: (result) => {
-          this.countries = result.data;
-        },
-        error: (error) => console.error(error)
-      });
+      null).pipe(map(x => x.data))
+    //.subscribe({
+    //  next: (result) => {
+    //    this.countries = result.data;
+    //  },
+    //  error: (error) => console.error(error)
+    //});
   }
 
   onSubmit() {
