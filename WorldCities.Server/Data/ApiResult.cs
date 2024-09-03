@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 
@@ -32,6 +31,7 @@ namespace WorldCities.Server.Data
         }
 
         #region Methods
+
         /// <summary>
         /// Pages, sorts and/or filters a IQueryable source.
         /// </summary>
@@ -117,9 +117,11 @@ namespace WorldCities.Server.Data
                     );
             return prop != null;
         }
-        #endregion
+
+        #endregion Methods
 
         #region Properties
+
         /// <summary>
         /// The data result.
         /// </summary>
@@ -146,7 +148,7 @@ namespace WorldCities.Server.Data
         public int TotalPages { get; private set; }
 
         /// <summary>
-        /// TRUE if the current page has a previous page, 
+        /// TRUE if the current page has a previous page,
         /// FALSE otherwise.
         /// </summary>
         public bool HasPreviousPage
@@ -184,10 +186,11 @@ namespace WorldCities.Server.Data
         public string? FilterColumn { get; set; }
 
         /// <summary>
-        /// Filter Query string 
+        /// Filter Query string
         /// (to be used within the given FilterColumn)
         /// </summary>
         public string? FilterQuery { get; set; }
-        #endregion
+
+        #endregion Properties
     }
 }

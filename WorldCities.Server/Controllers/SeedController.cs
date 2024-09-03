@@ -1,9 +1,9 @@
-using System.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using WorldCities.Server.Data.Models;
+using System.Security;
 using WorldCities.Server.Data;
+using WorldCities.Server.Data.Models;
 
 namespace WorldCities.Server.Controllers
 {
@@ -36,24 +36,24 @@ namespace WorldCities.Server.Controllers
             using var stream = System.IO.File.OpenRead(path);
             using var excelPackage = new ExcelPackage(stream);
 
-            // get the first worksheet 
+            // get the first worksheet
             var worksheet = excelPackage.Workbook.Worksheets[0];
 
-            // define how many rows we want to process 
+            // define how many rows we want to process
             var nEndRow = worksheet.Dimension.End.Row;
 
-            // initialize the record counters 
+            // initialize the record counters
             var numberOfCountriesAdded = 0;
             var numberOfCitiesAdded = 0;
 
-            // create a lookup dictionary 
-            // containing all the countries already existing 
+            // create a lookup dictionary
+            // containing all the countries already existing
             // into the Database (it will be empty on first run).
             var countriesByName = _context.Countries
                 .AsNoTracking()
                 .ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
 
-            // iterates through all rows, skipping the first one 
+            // iterates through all rows, skipping the first one
             for (int nRow = 2; nRow <= nEndRow; nRow++)
             {
                 var row = worksheet.Cells[
@@ -67,7 +67,7 @@ namespace WorldCities.Server.Controllers
                 if (countriesByName.ContainsKey(countryName))
                     continue;
 
-                // create the Country entity and fill it with xlsx data 
+                // create the Country entity and fill it with xlsx data
                 var country = new Country
                 {
                     Name = countryName,
@@ -75,23 +75,23 @@ namespace WorldCities.Server.Controllers
                     ISO3 = iso3
                 };
 
-                // add the new country to the DB context 
+                // add the new country to the DB context
                 await _context.Countries.AddAsync(country);
 
                 // store the country in our lookup to retrieve its Id later on
                 countriesByName.Add(countryName, country);
 
-                // increment the counter 
+                // increment the counter
                 numberOfCountriesAdded++;
             }
 
-            // save all the countries into the Database 
+            // save all the countries into the Database
             if (numberOfCountriesAdded > 0)
                 await _context.SaveChangesAsync();
 
             // create a lookup dictionary
-            // containing all the cities already existing 
-            // into the Database (it will be empty on first run). 
+            // containing all the cities already existing
+            // into the Database (it will be empty on first run).
             var cities = _context.Cities
                 .AsNoTracking()
                 .ToDictionary(x => (
@@ -100,7 +100,7 @@ namespace WorldCities.Server.Controllers
                     Lon: x.Lon,
                     CountryId: x.CountryId));
 
-            // iterates through all rows, skipping the first one 
+            // iterates through all rows, skipping the first one
             for (int nRow = 2; nRow <= nEndRow; nRow++)
             {
                 var row = worksheet.Cells[
@@ -122,7 +122,7 @@ namespace WorldCities.Server.Controllers
                     CountryId: countryId)))
                     continue;
 
-                // create the City entity and fill it with xlsx data 
+                // create the City entity and fill it with xlsx data
                 var city = new City
                 {
                     Name = name,
@@ -131,14 +131,14 @@ namespace WorldCities.Server.Controllers
                     CountryId = countryId
                 };
 
-                // add the new city to the DB context 
+                // add the new city to the DB context
                 _context.Cities.Add(city);
 
-                // increment the counter 
+                // increment the counter
                 numberOfCitiesAdded++;
             }
 
-            // save all the cities into the Database 
+            // save all the cities into the Database
             if (numberOfCitiesAdded > 0)
                 await _context.SaveChangesAsync();
 

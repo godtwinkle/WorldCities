@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 // import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 // import { environment } from './../../environments/environment';
 import { City } from './city';
@@ -33,6 +33,7 @@ export class CityEditComponent
   countries?: Observable<Country[]>;
   activityLog: string = '';
   private subscriptions: Subscription = new Subscription();
+  private destroySubject = new Subject()
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -54,21 +55,24 @@ export class CityEditComponent
       countryId: new FormControl('', Validators.required)
     }, null, this.isDupeCity());
 
-    this.subscriptions.add(this.form.valueChanges.subscribe(() => {
-      if (!this.form.dirty) {
-        this.log("Form Model has been loaded");
-      } else {
-        this.log("Form was updated by the user");
-      }
-    }));
+        /*this.subscriptions.add(*/this.form.valueChanges.pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Form Model has been loaded");
+        } else {
+          this.log("Form was updated by the user");
+        }
+      })
+        /*)*/;
 
-    this.subscriptions.add(this.form.get("name")!.valueChanges.subscribe(() => {
-      if (!this.form.dirty) {
-        this.log("Name has been loaded with initial values");
-      } else {
-        this.log("Name was updated by the user")
-      }
-    }));
+       /* this.subscriptions.add(*/this.form.get("name")!.valueChanges.pipe(takeUntil(this.destroySubject))
+      .subscribe(() => {
+        if (!this.form.dirty) {
+          this.log("Name has been loaded with initial values");
+        } else {
+          this.log("Name was updated by the user")
+        }
+      })/*)*/;
 
     this.loadData();
   }
@@ -179,6 +183,9 @@ export class CityEditComponent
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    //this.subscriptions.unsubscribe();
+
+    this.destroySubject.next(true)
+    this.destroySubject.complete()
   }
 }

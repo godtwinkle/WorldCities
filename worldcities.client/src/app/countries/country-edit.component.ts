@@ -17,7 +17,6 @@ import { CountryService } from './country.service';
 })
 export class CountryEditComponent
   extends BaseFormComponent implements OnInit {
-
   // the view title
   title?: string;
 
@@ -66,7 +65,6 @@ export class CountryEditComponent
   }
 
   loadData() {
-    
     // retrieve the ID from the 'id' parameter
     var idParam = this.activatedRoute.snapshot.paramMap.get('id');
     this.id = idParam ? +idParam : 0;
