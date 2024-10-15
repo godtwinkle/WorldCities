@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorldCities.Server.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WorldCities.Server.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext() : base()
         {
