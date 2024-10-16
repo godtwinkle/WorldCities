@@ -1,16 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorldCities.Server.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WorldCities.Server.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext() : base()
-        {
-        }
-
-        public ApplicationDbContext(DbContextOptions options)
-         : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 
@@ -18,10 +15,10 @@ namespace WorldCities.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // add the EntityTypeConfiguration classes
+            // Thêm các cấu hình EntityTypeConfiguration
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(ApplicationDbContext).Assembly
-                );
+            );
         }
 
         public DbSet<City> Cities => Set<City>();
