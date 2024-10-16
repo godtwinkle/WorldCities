@@ -6,7 +6,10 @@ import { of } from 'rxjs';
 import { CitiesComponent } from './cities.component';
 import { City } from './city';
 import { CityService } from './city.service';
-import { ApiResult } from '../base.service';describe('CitiesComponent', () => {  let component: CitiesComponent;
+import { ApiResult } from '../base.service';
+
+describe('CitiesComponent', () => {
+  let component: CitiesComponent;
   let fixture: ComponentFixture<CitiesComponent>
   beforeEach(async () => {
     let cityService = jasmine.createSpyObj<CityService>('CityService', ['getData'])
