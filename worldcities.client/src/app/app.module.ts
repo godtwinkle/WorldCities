@@ -12,6 +12,7 @@ import { CitiesComponent } from './cities/cities.component';
 import { CountriesComponent } from './countries/countries.component';
 import { CityEditComponent } from './cities/city-edit.component';
 import { CountryEditComponent } from './countries/country-edit.component';
+import { LoginComponent } from './auth/login.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CountryEditComponent } from './countries/country-edit.component';
     CountriesComponent,
     CityEditComponent,
     CountryEditComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

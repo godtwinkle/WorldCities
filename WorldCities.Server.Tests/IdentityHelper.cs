@@ -28,15 +28,15 @@ namespace WorldCities.Server.Tests
         {
             return new UserManager<TIDentityUser>
                 (
-                userStore,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<IPasswordHasher<TIDentityUser>>().Object,
-                new IUserValidator<TIDentityUser>[0],
-                new IPasswordValidator<TIDentityUser>[0],
-                new UpperInvariantLookupNormalizer(),
-                new Mock<IdentityErrorDescriber>().Object,
-                new Mock<IServiceProvider>().Object,
-                new Mock<ILogger<UserManager<TIDentityUser>>>().Object
+                    userStore,
+                    new Mock<IOptions<IdentityOptions>>().Object,
+                    new Mock<IPasswordHasher<TIDentityUser>>().Object,
+                    new IUserValidator<TIDentityUser>[0],
+                    new IPasswordValidator<TIDentityUser>[0],
+                    new UpperInvariantLookupNormalizer(),
+                    new Mock<IdentityErrorDescriber>().Object,
+                    new Mock<IServiceProvider>().Object,
+                    new Mock<ILogger<UserManager<TIDentityUser>>>().Object
                 );
         }
     }

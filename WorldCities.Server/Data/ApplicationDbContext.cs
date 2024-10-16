@@ -6,12 +6,8 @@ namespace WorldCities.Server.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext() : base()
-        {
-        }
-
-        public ApplicationDbContext(DbContextOptions options)
-         : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 
@@ -19,10 +15,10 @@ namespace WorldCities.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // add the EntityTypeConfiguration classes
+            // Thêm các cấu hình EntityTypeConfiguration
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(ApplicationDbContext).Assembly
-                );
+            );
         }
 
         public DbSet<City> Cities => Set<City>();
