@@ -2,14 +2,17 @@
   <mat-toolbar color="primary">
     <button mat-icon-button [routerLink]="['/']">
       <mat-icon>
-        home
+        Trang chủ
       </mat-icon>
     </button>
     <a mat-flat-button color="primary" [routerLink]="['/cities']">
-      Cities
+      Thành phố
     </a>
     <a mat-flat-button color="primary" [routerLink]="['/countries']">
-      Countries
+      Quốc gia
     </a>
+    <span class="separator"></span>
+    <a *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/login']">Đăng nhập</a>
+    <a *ngIf="isLoggedIn" mat-flat-button color="primary" (click)="onLogout()">Đăng xuất</a>
   </mat-toolbar>
 </header>

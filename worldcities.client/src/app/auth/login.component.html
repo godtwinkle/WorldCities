@@ -1,1 +1,31 @@
-<p>login works!</p>
+<div class="login">
+  <h1>Đăng nhập</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+      <mat-error *ngIf="loginResult&&!loginResult.success">
+        <strong>LỖI</strong>:{{loginResult.message}}
+      </mat-error>
+    </p>
+    <mat-form-field>
+      <mat-lable>Email:</mat-lable>
+      <input matInput formControlName="email" required placeholder="Email" />
+      <mat-error *ngFor="let error of getErrors(form.get('email')!,'Email')">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-lable>
+        Mật khẩu:
+      </mat-lable>
+      <input matInput type="password" formControlName="password" required placeholder="Mật khẩu" />
+      <mat-error *ngFor="let error of getErrors(form.get('password')!,'Password')">
+        {{error}}
+      </mat-error>
+    </mat-form-field>
+    <div>
+      <button mat-flat-button color="primary" type="submit">Đăng nhập</button>
+      <button mat-flat-button color="secondary" [routerLink]="['/']">Huỷ</button>
+    </div>
+  </form>
+</div>
