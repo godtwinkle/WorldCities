@@ -24,11 +24,14 @@
     "@angular/platform-browser-dynamic": "17.0.3",
     "@angular/router": "17.0.3",
     "@angular/service-worker": "17.0.3",
+    "apollo-angular": "^7.2.1",
     "jest-editor-support": "*",
     "run-script-os": "*",
     "rxjs": "7.8.0",
     "tslib": "2.3.0",
-    "zone.js": "0.14.2"
+    "zone.js": "0.14.2",
+    "@apollo/client": "^3.0.0",
+    "graphql": "^16"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "17.0.3",
